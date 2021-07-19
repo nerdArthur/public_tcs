@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-controller-frontend
+  annotations:
+     kubernetes.io/ingress.class: nginx
+     nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: whatssender.local
+      http:
+        paths:
+          - path: /(.*)?
+            backend:
+              serviceName: frontend-svc
+              servicePort: 3000
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-controller-backend
+  annotations:
+     kubernetes.io/ingress.class: nginx
+     nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+    - host: backend.local
+      http:
+        paths:
+          - path: /whats/(.*)?
+            backend:
+              serviceName: backend-svc
+              servicePort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-controller-mysql
+  annotations:
+     kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: mysql.local
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: mysql-svc
+                port:
+                  number: 3306

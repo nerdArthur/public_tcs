@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-depl
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: whats
+          imagePullPolicy: Never
+          env:
+            - name: SERVER_PORT
+              value: "3000"
+            - name: JWT_SECRET
+              value: BATATINHA
+            - name: DB_URL
+              value: mysql://tcc:tcc@mysql-svc:3306/tcc-db
+            - name: GMAIL_ACCOUNT
+              value: conta.teste.tcc.arthur@gmail.com
+            - name: GMAIL_PASSWORD
+              value: batatinha
+            - name: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+              value: 'true'
+            - name: PUPPETEER_EXECUTABLE_PATH
+              value: /usr/bin/chromium-browser
+          ports:
+            - containerPort: 3000
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-svc
+spec:
+  selector:
+    app: backend
+  type: ClusterIP
+  ports:
+    - name: backend
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

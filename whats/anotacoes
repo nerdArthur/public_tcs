@@ -1,0 +1,18 @@
+email para testes: {
+    username: conta.teste.tcc.arthur@gmail.com
+    DB_PASSWORD: batatinha
+}
+
+---
+
+docker command line db setup:
+
+docker run -d mysql:latest \
+--build-arg --default-authentication-plugin=mysql_native_password \
+--name tcc-db \                 
+-p 3306:3306 \
+-e "MYSQL_ROOT_PASSWORD=tcc" \
+-e "MYSQL_DATABASE=tcc-db" \
+-e "MYSQL_USER=tcc" \
+-e "MYSQL_PASSWORD=tcc"
+

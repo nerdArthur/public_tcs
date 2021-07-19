@@ -1,0 +1,5 @@
+diagrams
+.prettierrc.*
+database-setup.sh
+referencias
+node_modules
